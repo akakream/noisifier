@@ -4,7 +4,7 @@ from tensorflow import keras
 from keras.datasets import cifar10
 from keras.datasets import cifar100
 from keras.datasets import mnist
-from noisify import noisify 
+from noisify import Noisifier
  
 def load_dataset(dataset):
     
@@ -61,10 +61,12 @@ def load_dataset(dataset):
 def test_dataset(dataset):
     
     x_train, y_train, x_test, y_test = load_dataset(dataset)
+
+    noisifier = Noisifier()
     
-    noisify(y_train, 'pair', 0.45, 10, 0)
-    noisify(y_train, 'symmetry', 0.2, 10, 0)
-    noisify(y_train, 'symmetry', 0.5, 10, 0)
+    noisifier.noisify(y_train, 'pair', 0.45, 10, 0)
+    noisifier.noisify(y_train, 'symmetry', 0.2, 10, 0)
+    noisifier.noisify(y_train, 'symmetry', 0.5, 10, 0)
 
 
 def main():
