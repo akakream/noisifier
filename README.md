@@ -1,6 +1,6 @@
-# noisify
+# noisifier
 
-Add noise to your dataset
+Add label noise to your dataset
 
 ## Environment
 
@@ -15,3 +15,7 @@ numpy 1.18.3
 ## Licence
 
 noisify is released under the MIT licence.
+
+## Version 
+
+0.1

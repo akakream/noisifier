@@ -4,7 +4,7 @@ from tensorflow import keras
 from keras.datasets import cifar10
 from keras.datasets import cifar100
 from keras.datasets import mnist
-from noisify import Noisifier
+from noisifier import Noisifier
  
 def load_dataset(dataset):
     
