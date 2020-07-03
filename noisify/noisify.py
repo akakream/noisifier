@@ -46,6 +46,16 @@ def flip(y_train, P, random_state_seed=0):
     return y_train_copy
 
 def symmetry_flipping(y_train, noise_rate, num_classes, random_state_seed):
+    '''
+    Creates Symmetry flipping matrix and flips the labels accordingly
+    A 5-class example with noise_rate = 0.5:
+    [[0.5 0.125 0.125 0.125 0.125]
+     [0.125 0.5 0.125 0.125 0.125]
+     [0.125 0.125 0.5 0.125 0.125]
+     [0.125 0.125 0.125 0.5 0.125]
+     [0.125 0.125 0.125 0.125 0.5]]
+    '''
+
     P = np.ones((num_classes, num_classes))
     P = (noise_rate / (num_classes - 1)) * P
 
@@ -58,11 +68,20 @@ def symmetry_flipping(y_train, noise_rate, num_classes, random_state_seed):
     y_train_noisified = flip(y_train, P, random_state_seed)
 
     noise = (y_train_noisified != y_train).mean()
-    print('Noise %.2f' % noise)
+    #print('Noise %.2f' % noise)
 
     return y_train_noisified
 
 def pair_flipping(y_train, noise_rate, num_classes, random_state_seed):
+    '''
+    Creates Pair flipping matrix and flips the labels accordingly
+    A 5-class example with noise_rate = 0.45:
+    [[0.55 0.45 0. 0. 0.]
+     [0. 0.55 0.45 0. 0.]
+     [0. 0. 0.55 0.45 0.]
+     [0. 0. 0. 0.55 0.45]
+     [0.45 0. 0. 0. 0.55]]
+    '''
     
     P = np.eye(num_classes)
 
@@ -75,9 +94,7 @@ def pair_flipping(y_train, noise_rate, num_classes, random_state_seed):
         y_train_noisified = flip(y_train, P, random_state_seed)
         
         noise = (y_train_noisified != y_train).mean()
-        print('Noise %.2f' % noise)
-
-    print(P)
+        #print('Noise %.2f' % noise)
 
     return y_train_noisified
 
