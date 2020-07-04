@@ -64,16 +64,14 @@ def test_dataset(dataset):
 
     noisifier = Noisifier()
     
-    noisifier.noisify(y_train, 'pair', 0.45, 10)
-    noisifier.noisify(y_train, 'symmetry', 0.2, 10)
-    noisifier.noisify(y_train, 'symmetry', 0.5, 10)
-
+    y_noisy_1 = noisifier.noisify(y_train, 'pair', 0.45, 10)
+    y_noisy_2 = noisifier.noisify(y_train, 'symmetry', 0.2, 10)
+    y_noisy_3 = noisifier.noisify(y_train, 'symmetry', 0.5, 10)
 
 def main():
 
     #TEST CIFAR10
     test_dataset('cifar10')
-
 
 if __name__ == '__main__':
     main()

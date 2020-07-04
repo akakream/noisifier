@@ -26,10 +26,10 @@ Create a noisifier instance
 noisifier = Noisifier()
 ```
 
-Noisify your data
+Noisify your data. Return is same type and same shape as y\_train.
 
 ```
-noised_y_train = noisifier.noisify(y_train, noise_type, noise_rate, NUM_OF_CLASSES, random_state_seed)
+noised_y_train = noisifier.noisify(y_train, noise_type, noise_rate, NUM_OF_CLASSES, random_state_seed=0)
 ```
 
 ### Caveats
@@ -50,4 +50,4 @@ noisify is released under the MIT licence.
 
 ## Version 
 
-0.1
+0.2

@@ -110,8 +110,12 @@ class Noisifier:
         return y_train_noisified
 
     def noisify(self, y_train, noise_type, noise_rate, num_classes, random_state_seed=0):
-        if noise_type == 'symmetry':
-            self.symmetry_flipping(y_train, noise_rate, num_classes, random_state_seed)
-        elif noise_type == 'pair':
-            self.pair_flipping(y_train, noise_rate, num_classes, random_state_seed)
 
+        if noise_type == 'symmetry':
+            noisy_y = self.symmetry_flipping(y_train, noise_rate, num_classes, random_state_seed)
+        elif noise_type == 'pair':
+            noisy_y = self.pair_flipping(y_train, noise_rate, num_classes, random_state_seed)
+        else:
+            raise ValueError('noise_type is not valid')
+            
+        return noisy_y
