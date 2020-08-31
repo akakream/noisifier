@@ -2,6 +2,10 @@
 
 Add label noise to your dataset
 
+This work is inspired by the noise matrices for single label data that are introduced, at least to me, in [https://github.com/bhanML/Co-teaching](https://github.com/bhanML/Co-teaching).
+In order to easily noisify my single label data, I created a python package that applies these noise matrices.
+I also extend this package by defining and applying label noise to multi label data. 
+
 ## Prerequisites
 
 python 3.6.9 

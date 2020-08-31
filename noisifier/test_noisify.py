@@ -62,16 +62,30 @@ def test_dataset(dataset):
     
     x_train, y_train, x_test, y_test = load_dataset(dataset)
 
+    print(f"x_train.shape: {x_train.shape}")
+    print(f"x_train[0].shape: {x_train[0].shape}")
+
     noisifier = Noisifier()
     
     y_noisy_1 = noisifier.noisify(y_train, 'pair', 0.45, 10)
     y_noisy_2 = noisifier.noisify(y_train, 'symmetry', 0.2, 10)
     y_noisy_3 = noisifier.noisify(y_train, 'symmetry', 0.5, 10)
 
+def multiLabelNoiseTest():
+    y = tf.constant([[1,0,1,0,1,1,0,0,1],[1,0,1,0,1,1,0,0,1],[1,0,1,0,1,1,0,0,1]]) 
+    p = tf.constant([[0.91,0.11,0.87,0.13,0.92,0.83,0.12,0.05,0.95],[0.91,0.11,0.92,0.13,0.92,0.83,0.12,0.05,0.95],[0.91,0.11,0.87,0.13,0.92,0.83,0.12,0.05,0.95]], dtype=np.float32)
+
+    noisifier = Noisifier()
+
+    noisy_y = noisifier.random_multi_label_noise(y,2/3,5/9)
+
+    return noisy_y
+
 def main():
 
-    #TEST CIFAR10
-    test_dataset('cifar10')
+    # TEST CIFAR10
+    # test_dataset('cifar10')
+    noisy_y = multiLabelNoiseTest()
 
 if __name__ == '__main__':
     main()

@@ -119,3 +119,26 @@ class Noisifier:
             raise ValueError('noise_type is not valid')
             
         return noisy_y
+
+    def random_multi_label_noise(self, y_batch, sample_rate, class_rate):
+        '''
+        y_batch = sahpe must be (batch_size,classes)
+        sample_rate = between 0 and 1.0 (float). The percentage of samples that will be noisified in the mini batch.
+        class_rate = between 0 and 1.0 (float). The percentage of classes that will be noisified for the sample.
+        '''
+        
+        num_samples = y_batch.shape[0]
+        num_classes = y_batch.shape[1]
+        y_batch = y_batch.numpy()
+
+        num_noisy_samples = round(num_samples * sample_rate)
+        num_noisy_classes = round(num_classes * class_rate)
+
+        random_samples = np.random.choice(range(0,num_samples),num_noisy_samples, replace=False)
+        random_samples = np.expand_dims(random_samples, axis=0)
+        random_classes = np.random.choice(range(0,num_classes),num_noisy_classes, replace=False)
+        random_classes = np.expand_dims(random_classes, axis=1)
+
+        y_batch[random_samples, random_classes] = -y_batch[random_samples, random_classes] + 1
+
+        return y_batch
