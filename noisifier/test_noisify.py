@@ -81,11 +81,27 @@ def multiLabelNoiseTest():
 
     return noisy_y
 
+def add_missing_extra_noise_test():
+    y = tf.constant([[0,1,0,0,1],[1,1,1,0,0],[0,0,0,0,1]])
+    print(f"y: {y}")
+
+    noisifier = Noisifier()
+
+    missing_y = noisifier.add_missing_noise(y, 0.5)
+    print(f"missing_y: {missing_y}")
+    
+    extra_y = noisifier.add_extra_noise(y,0.5)
+    print(f"extra_y: {extra_y}")
+
+    both_y = noisifier.add_mix_noise(y,0.5)
+    print(f"both_y: {both_y}")
+
 def main():
 
     # TEST CIFAR10
     # test_dataset('cifar10')
-    noisy_y = multiLabelNoiseTest()
+    # noisy_y = multiLabelNoiseTest()
+    add_missing_extra_noise_test()
 
 if __name__ == '__main__':
     main()

@@ -142,3 +142,86 @@ class Noisifier:
         y_batch[random_samples, random_classes] = -y_batch[random_samples, random_classes] + 1
 
         return y_batch
+
+    def add_missing_noise(self, y_batch, rate):
+        '''
+        This function is for multi label data,
+        and flips positive labels into negative labels for the given rate.
+        Let y_batch be in the following shape: (batch_size, classes).
+        Give a rate in float between 0. and 1.
+        (Rate * number of zeros) zeros will be flipped. 
+        '''
+        num_samples = y_batch.shape[0]
+        num_classes = y_batch.shape[1]
+        y_batch = y_batch.numpy()
+        y_batch = y_batch.flatten()
+
+        # Get the indices of zeros and map them to a 1-d array
+        zero_indices = np.where(y_batch == 0)[0]
+
+        # Calculate the number of zeros to get flipped
+        chosen_size = int(len(zero_indices) * rate)
+        # Choose the indices of zeros to be flipped
+        chosen_ones = np.random.choice(zero_indices, chosen_size, replace=False)
+
+        # Flip labels
+        y_batch[chosen_ones] = 1
+        y_batch = np.reshape(y_batch, (num_samples, num_classes))
+
+        return y_batch
+
+    def add_extra_noise(slef, y_batch, rate):
+        '''
+        This function is for multi label data,
+        and flips negative labels into positive labels for the given rate.
+        Let y_batch be in the following shape: (batch_size, classes).
+        Give a rate in float between 0. and 1.
+        (Rate * number of ones) ones will be flipped. 
+        '''
+        num_samples = y_batch.shape[0]
+        num_classes = y_batch.shape[1]
+        y_batch = y_batch.numpy()
+        y_batch = y_batch.flatten()
+
+        # Get the indices of ones and map them to a 1-d array
+        one_indices = np.where(y_batch == 1)[0]
+
+        # Calculate the number of ones to get flipped
+        chosen_size = int(len(one_indices) * rate)
+        # Choose the indices of ones to be flipped
+        chosen_ones = np.random.choice(one_indices, chosen_size, replace=False)
+
+        # Flip labels
+        y_batch[chosen_ones] = 0
+        y_batch = np.reshape(y_batch, (num_samples, num_classes))
+
+        return y_batch
+
+    def add_mix_noise(self, y_batch, rate):
+        '''
+        This function is for multi label data,
+        and flips labels into their opposites for the given rate.
+        So rate/2 positive lables will be turned into negatives,
+        and rate/2 negative lables will be turned into positives.
+        Let y_batch be in the following shape: (batch_size, classes).
+        Give a rate in float between 0. and 1.
+        '''
+        num_samples = y_batch.shape[0]
+        num_classes = y_batch.shape[1]
+        y_batch = y_batch.numpy()
+        y_batch = y_batch.flatten()
+
+        # Get the indices of zeros and map them to a 1-d array
+        indices = num_samples * num_classes
+
+        # Calculate the number of zeros to get flipped
+        chosen_size = int(indices * rate)
+        # Choose the indices of zeros to be flipped
+        chosen_ones = np.random.choice(indices, chosen_size, replace=False)
+
+        # Flip labels
+        y_batch[chosen_ones] = -y_batch[chosen_ones]+1
+        y_batch = np.reshape(y_batch, (num_samples, num_classes))
+
+        return y_batch
+
