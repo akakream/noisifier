@@ -54,4 +54,4 @@ noisify is released under the MIT licence.
 
 ## Version 
 
-0.2
+0.4

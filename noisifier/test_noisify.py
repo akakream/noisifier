@@ -96,12 +96,20 @@ def add_missing_extra_noise_test():
     both_y = noisifier.add_mix_noise(y,0.5)
     print(f"both_y: {both_y}")
 
+def classwise_noise_test():
+    y = tf.constant([[0,1,0,0,1],[1,1,1,0,0],[0,0,0,0,1],[0,0,0,0,1],[0,0,0,0,1]])
+    print(f"y: {y}")
+
+    noisifier = Noisifier()
+    classwise_y = noisifier.add_classwise_noise(y, 0.5)
+    print(f"classwise_y: {classwise_y}")
+
 def main():
 
     # TEST CIFAR10
     # test_dataset('cifar10')
     # noisy_y = multiLabelNoiseTest()
-    add_missing_extra_noise_test()
+    classwise_noise_test()
 
 if __name__ == '__main__':
     main()
