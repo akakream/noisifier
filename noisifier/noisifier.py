@@ -201,8 +201,6 @@ class Noisifier:
         '''
         This function is for multi label data,
         and flips labels into their opposites for the given rate.
-        So rate/2 positive lables will be turned into negatives,
-        and rate/2 negative lables will be turned into positives.
         Let y_batch be in the following shape: (batch_size, classes).
         Give a rate in float between 0. and 1.
         '''
@@ -211,12 +209,12 @@ class Noisifier:
         y_batch = y_batch.numpy()
         y_batch = y_batch.flatten()
 
-        # Get the indices of zeros and map them to a 1-d array
+        # Get the indices and map them to a 1-d array
         indices = num_samples * num_classes
 
-        # Calculate the number of zeros to get flipped
+        # Calculate the number of classes to get flipped
         chosen_size = int(indices * rate)
-        # Choose the indices of zeros to be flipped
+        # Choose the indices of classes to be flipped
         chosen_ones = np.random.choice(indices, chosen_size, replace=False)
 
         # Flip labels
