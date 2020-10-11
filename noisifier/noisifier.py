@@ -10,7 +10,7 @@ class Noisifier:
 
     def __str__(self):
         return self.name
-
+    
     def wrong_flip(self, y_train, P, random_state_seed=0):
 
         y_train_copy = np.copy(y_train)
@@ -120,12 +120,14 @@ class Noisifier:
             
         return noisy_y
 
-    def random_multi_label_noise(self, y_batch, sample_rate, class_rate):
+    def random_multi_label_noise(self, y_batch, sample_rate, class_rate, seed=False):
         '''
         y_batch = sahpe must be (batch_size,classes)
         sample_rate = between 0 and 1.0 (float). The percentage of samples that will be noisified in the mini batch.
         class_rate = between 0 and 1.0 (float). The percentage of classes that will be noisified for the sample.
         '''
+        if seed == True:
+            np.random.seed(0)
         
         num_samples = y_batch.shape[0]
         num_classes = y_batch.shape[1]
@@ -143,7 +145,7 @@ class Noisifier:
 
         return y_batch
 
-    def add_missing_noise(self, y_batch, rate):
+    def add_missing_noise(self, y_batch, rate, seed=False):
         '''
         This function is for multi label data,
         and flips positive labels into negative labels for the given rate.
@@ -151,6 +153,9 @@ class Noisifier:
         Give a rate in float between 0. and 1.
         (Rate * number of zeros) zeros will be flipped. 
         '''
+        if seed == True:
+            np.random.seed(0)
+
         num_samples = y_batch.shape[0]
         num_classes = y_batch.shape[1]
         y_batch = y_batch.numpy()
@@ -170,7 +175,7 @@ class Noisifier:
 
         return y_batch
 
-    def add_extra_noise(self, y_batch, rate):
+    def add_extra_noise(self, y_batch, rate, seed=False):
         '''
         This function is for multi label data,
         and flips negative labels into positive labels for the given rate.
@@ -178,6 +183,9 @@ class Noisifier:
         Give a rate in float between 0. and 1.
         (Rate * number of ones) ones will be flipped. 
         '''
+        if seed == True:
+            np.random.seed(0)
+
         num_samples = y_batch.shape[0]
         num_classes = y_batch.shape[1]
         y_batch = y_batch.numpy()
@@ -197,13 +205,16 @@ class Noisifier:
 
         return y_batch
 
-    def add_mix_noise(self, y_batch, rate):
+    def add_mix_noise(self, y_batch, rate, seed=False):
         '''
         This function is for multi label data,
         and flips labels into their opposites for the given rate.
         Let y_batch be in the following shape: (batch_size, classes).
         Give a rate in float between 0. and 1.
         '''
+        if seed == True:
+            np.random.seed(0)
+
         num_samples = y_batch.shape[0]
         num_classes = y_batch.shape[1]
         y_batch = y_batch.numpy()
@@ -223,7 +234,7 @@ class Noisifier:
 
         return y_batch
 
-    def add_classwise_noise(self, y_batch, rate):
+    def add_classwise_noise(self, y_batch, rate, seed=False):
         '''
         This function adds class-wise label noise to dataset.
         According to the rate that is given, it chooses the same percentage
@@ -231,6 +242,8 @@ class Noisifier:
         Let y_batch be in the following shape: (batch_size, classes).
         Give a rate in float between 0. and 1.
         '''
+        if seed == True:
+            np.random.seed(0)
 
         num_samples = y_batch.shape[0]
         num_classes = y_batch.shape[1]

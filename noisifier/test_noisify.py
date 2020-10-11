@@ -101,7 +101,7 @@ def classwise_noise_test():
     print(f"y: {y}")
 
     noisifier = Noisifier()
-    classwise_y = noisifier.add_classwise_noise(y, 0.5)
+    classwise_y = noisifier.add_classwise_noise(y, 0.5, seed=True)
     print(f"classwise_y: {classwise_y}")
 
 def main():
