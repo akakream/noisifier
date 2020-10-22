@@ -119,7 +119,7 @@ def main():
     # test_dataset('cifar10')
     # noisy_y = multiLabelNoiseTest()
     #classwise_noise_test()
-    add_missing_extra_noise_test()
+    #add_missing_extra_noise_test()
 
 if __name__ == '__main__':
     main()

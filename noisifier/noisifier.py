@@ -171,12 +171,10 @@ class Noisifier:
 
         # Calculate the number of zeros to get flipped
         chosen_size_zeros = int(len(zero_indices) * rate)
-        print(f"chosen_size_zeros: {chosen_size_zeros}")
         # Choose the indices of zeros to be flipped
         chosen_zeros = np.random.choice(zero_indices, chosen_size_zeros, replace=False)
         # Calculate the number of ones to get flipped
         chosen_size_ones = int(len(one_indices) * rate)
-        print(f"chosen_size_ones: {chosen_size_ones}")
         # Choose the indices of ones to be flipped
         chosen_ones = np.random.choice(one_indices, chosen_size_ones, replace=False)
         
