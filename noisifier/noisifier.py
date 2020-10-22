@@ -145,6 +145,50 @@ class Noisifier:
 
         return y_batch
 
+    def add_missing_extra_noise(self, y_batch, rate, seed=False):
+        '''
+        This function is for multi label data,
+        and flips (rate) percentage of positive labels in the batch to 
+        negative labels, and flips (rate) percentage of negative labels in
+        the batch to positive labels.
+        Let y_batch be in the following shape: (batch_size, classes).
+        Give a rate in float between 0. and 1.
+        (Rate * number of zeros) zeros will be flipped. 
+        (Rate * number of ones) ones will be flipped. 
+        '''
+        if seed == True:
+            np.random.seed(0)
+
+        num_samples = y_batch.shape[0]
+        num_classes = y_batch.shape[1]
+        y_batch = y_batch.numpy()
+        y_batch = y_batch.flatten()
+
+        # Get the indices of zeros and map them to a 1-d array
+        zero_indices = np.where(y_batch == 0)[0]
+        # Get the indices of ones and map them to a 1-d array
+        one_indices = np.where(y_batch == 1)[0]
+
+        # Calculate the number of zeros to get flipped
+        chosen_size_zeros = int(len(zero_indices) * rate)
+        print(f"chosen_size_zeros: {chosen_size_zeros}")
+        # Choose the indices of zeros to be flipped
+        chosen_zeros = np.random.choice(zero_indices, chosen_size_zeros, replace=False)
+        # Calculate the number of ones to get flipped
+        chosen_size_ones = int(len(one_indices) * rate)
+        print(f"chosen_size_ones: {chosen_size_ones}")
+        # Choose the indices of ones to be flipped
+        chosen_ones = np.random.choice(one_indices, chosen_size_ones, replace=False)
+        
+        # Flip the zeros
+        y_batch[chosen_zeros] = 1
+        # Flip the ones
+        y_batch[chosen_ones] = 0
+        # Reshape the batch
+        y_batch = np.reshape(y_batch, (num_samples, num_classes))
+
+        return y_batch
+    
     def add_missing_noise(self, y_batch, rate, seed=False):
         '''
         This function is for multi label data,
