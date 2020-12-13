@@ -77,7 +77,9 @@ def multiLabelNoiseTest():
 
     noisifier = Noisifier()
 
+    print(y)
     noisy_y = noisifier.random_multi_label_noise(y,2/3,5/9)
+    print(noisy_y)
 
     return noisy_y
 
@@ -117,7 +119,7 @@ def main():
 
     # TEST CIFAR10
     # test_dataset('cifar10')
-    # noisy_y = multiLabelNoiseTest()
+    noisy_y = multiLabelNoiseTest()
     #classwise_noise_test()
     #add_missing_extra_noise_test()
 
