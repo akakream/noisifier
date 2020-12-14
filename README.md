@@ -51,4 +51,4 @@ noisifier is released under the MIT licence.
 
 ## Version 
 
-0.4.5
+0.4.6

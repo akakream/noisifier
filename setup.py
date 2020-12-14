@@ -3,13 +3,13 @@ from distutils.core import setup
 setup(
   name = 'noisifier',
   packages = ['noisifier'],
-  version = '0.4.5',
+  version = '0.4.6',
   license='MIT',
   description = 'Add label noise to your dataset',
   author = 'akakream',
   author_email = 'akakream@gmail.com',
   url = 'https://github.com/akakream/noisifier',
-  download_url = 'https://github.com/akakream/noisifier/archive/v0.4.5-alpha.tar.gz',
+  download_url = 'https://github.com/akakream/noisifier/archive/v0.4.6-alpha.tar.gz',
   keywords = ['NOISE', 'LABEL NOISE', 'NOISIFY', 'NOISIFIER', 'Y_TRAIN', 'CIFAR10'],
   install_requires=[            
           'numpy',
