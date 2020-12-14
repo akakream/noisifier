@@ -14,6 +14,10 @@ setup(
   install_requires=[            
           'numpy',
       ],
+  test_requires=[
+          'tensorflow',
+          'pytorch'
+  ],
   classifiers=[
     'Development Status :: 3 - Alpha',      
     'Intended Audience :: Developers',      

@@ -1,16 +1,18 @@
 # noisifier
 
-Add label noise to your dataset
+noisifier is a simple, yet effective python library. 
 
-This work is inspired by the noise matrices for single label data that are introduced, at least to me, in [https://github.com/bhanML/Co-teaching](https://github.com/bhanML/Co-teaching).
-In order to easily noisify my single label data, I created a python package that applies these noise matrices.
-I also extend this package by defining and applying label noise to multi label data. 
+noisifier allows you to add noise to the labels of your dataset. You can use the noisified dataset in your experiments, also to train your machine learning model robustly against label noise.
+
+Your dataset can be single label or multi-label; just create the right type of noisifier and keep adding noise.
+
+![](images/noisifier_figure.jpg)
 
 ## Prerequisites
 
-python 3.6.9 
+python 3.8.5 
 
-numpy 1.18.3
+numpy 1.19.2
 
 ## Installation
 
@@ -18,74 +20,35 @@ numpy 1.18.3
 pip install noisifier
 ```
 
-### Link to the project 
+## Link to the project 
 
 https://pypi.org/project/noisifier/
 
-## How to use
+## How to Use
 
-Create a noisifier instance
+Convert your Tensorflow or PyTorch tensors into numpy arrays with ```tensor.numpy()```, or load a numpy array.
+The output will be numpy array. Convert to tensorflow tensor with ```tf.convert_to_tensor(y)``` and to PyTorch tensor with ```torch.from_numpy(y)```.
 
-```
-noisifier = Noisifier()
-```
+![](images/binary_class_noisifier.png)
 
-Noisify your data. Return is same type and same shape as y\_train.
+![](images/multi_label_noisifier.png)
 
-### Single label noise
+![](images/multi_class_noisifier.png)
 
-```
-noised_y_train = noisifier.noisify(y_train, noise_type, noise_rate, NUM_OF_CLASSES, random_state_seed=0)
-```
+## Caveats
 
-For the noise\_type, use symmetry or pair.
-
-### Multi label noise
-
-Selects random samples and random classes of the chosen samples by the given rates.
+Provide the input in one-hot encoded form. If you use keras, you can do that by 
 
 ```
-noised_y_train = noisifier.random_multi_label_noise(y_train, sample_rate, class_rate)
+y = keras.utils.to_categorical(y, number_of_classes)
 ```
 
-Selects random classes that are labeled with 0 by the given rate and flips them to 1.
-
-```
-noised_y_train = noisifier.add_missing_noise(y_train, rate)
-```
-
-Selects random classes that are labeled with 1 by the given rate and flips them to 0.
-
-```
-noised_y_train = noisifier.add_extra_noise(y_train, rate)
-```
-
-Selects random classes by the given rate and flips them to their opposites.
-
-```
-noised_y_train = noisifier.add_mix_noise(y_train, rate)
-```
-
-Selects random labels for each class in the data by the given rate and flips them.
-
-```
-noised_y_train = noisifier.add_classwise_noise(y_train, rate)
-```
-
-### Caveats
-
-Provide y\_train in one-hot encoded form. If you use keras, you can do that by 
-
-```
-y_train = keras.utils.to_categorical(y_train, 10)
-```
-
-Use a float between 0 and 1 for the noise\_rate, sample\_rate, class\_rate and rate. Note that labels with more than 0.5 noise rate cannot be learned without additional assumptions.
+Use a float between 0. and 1. for all the noise rates.
 
 ## Licence
 
-noisify is released under the MIT licence.
+noisifier is released under the MIT licence.
 
 ## Version 
 
-0.4
+0.4.5

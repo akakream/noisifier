@@ -4,7 +4,8 @@ from tensorflow import keras
 from keras.datasets import cifar10
 from keras.datasets import cifar100
 from keras.datasets import mnist
-from noisifier import Noisifier
+from multi_class import Multi_Class_Noisifier
+from multi_label import Multi_Label_Noisifier
  
 def load_dataset(dataset):
     
@@ -65,11 +66,12 @@ def test_dataset(dataset):
     print(f"x_train.shape: {x_train.shape}")
     print(f"x_train[0].shape: {x_train[0].shape}")
 
-    noisifier = Noisifier()
+    noisifier = Multi_Class_Noisifier()
     
-    y_noisy_1 = noisifier.noisify(y_train, 'pair', 0.45, 10)
-    y_noisy_2 = noisifier.noisify(y_train, 'symmetry', 0.2, 10)
-    y_noisy_3 = noisifier.noisify(y_train, 'symmetry', 0.5, 10)
+    y_noisy_1 = noisifier.pair_flip(y_train, 0.45, 10)
+    #y_noisy_2 = noisifier.noisify(y_train, 0.2, 10)
+    #y_noisy_3 = noisifier.noisify(y_train, 0.5, 10)
+    #print(y_noisy_3)
 
 def multiLabelNoiseTest():
     y = tf.constant([[1,0,1,0,1,1,0,0,1],[1,0,1,0,1,1,0,0,1],[1,0,1,0,1,1,0,0,1]]) 
@@ -110,8 +112,8 @@ def add_missing_extra_noise_test():
     y = tf.constant([[0,0,0,0,1],[1,0,1,0,0],[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,1]])
     print(f"y: {y}")
 
-    noisifier = Noisifier()
-    classwise_y = noisifier.add_missing_extra_noise(y, 0.5, seed=True)
+    noisifier = Multi_Label_Noisifier()
+    classwise_y = noisifier.mix_label_noise(y, 0.5, seed=True)
     print(f"classwise_y: {classwise_y}")
 
 
@@ -119,9 +121,9 @@ def main():
 
     # TEST CIFAR10
     # test_dataset('cifar10')
-    noisy_y = multiLabelNoiseTest()
-    #classwise_noise_test()
-    #add_missing_extra_noise_test()
+    # noisy_y = multiLabelNoiseTest()
+    # classwise_noise_test()
+    add_missing_extra_noise_test()
 
 if __name__ == '__main__':
     main()

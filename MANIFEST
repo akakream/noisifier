@@ -2,5 +2,11 @@
 setup.cfg
 setup.py
 noisifier/__init__.py
-noisifier/noisifier.py
-noisifier/test_noisify.py
+noisifier/binary_class.py
+noisifier/multi_class.py
+noisifier/multi_label.py
+test/test.py
+test/test_binary_class.py
+test/test_multi_class.py
+test/test_multi_label.py
+test/test_noisify.py
