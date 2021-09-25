@@ -1,0 +1,27 @@
+from noisifier import Multi_Class_Noisifier 
+
+noisifier = Multi_Class_Noisifier() 
+
+# Example input 
+y = [[1. 0. 0. 0. 0.] 
+     [0. 0. 0. 1. 0.] 
+     [0. 0. 0. 0. 1.] 
+     [0. 1. 0. 0. 0.]] 
+
+# Refer to the paper 'Co-teaching: Robust Training of Deep Neural Networks with Extremely Noisy Labels
+noisy_y, noisy_labels = noisifier.symmetry_flip(y, .5) 
+'''
+[[1. 0. 0. 0. 0.] 
+ [0. 0. 0. 1. 0.] 
+ [0. 0. 1. 0. 0.] 
+ [1. 0. 0. 0. 0.]] 
+'''
+
+# Refer to the paper 'Co-teaching: Robust Training of Deep Neural Networks with Extremely Noisy Labels 
+noisy_y, noisy_labels = noisifier.pair_flip(y, .5) 
+'''
+[[1. 0. 0. 0. 0.] 
+ [0. 0. 0. 1. 0.] 
+ [1. 0. 0. 0. 0.] 
+ [0. 1. 0. 0. 0.]] 
+'''

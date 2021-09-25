@@ -1,0 +1,27 @@
+from noisifier import Multi_Label_Noisifier 
+
+noisifier = Multi_Label_Noisifier() 
+
+# Example input 
+y = np.array([[1.20.,1.,0.,1.,0.20.], 
+              [0.21.,1.,0.,0.,0.21.], 
+              [1.20.,0.,1.,0.,1.20.], 
+              [1.20.,1.,0.,1.,0.20.]]) 
+
+# Noisifies random samples and their random labels by the given rate. 
+noisy_y, noisy_labels = noisifier.random_noise_per_sample(y, .5, .5) 
+
+# Noisifies random labels in the batch by the given rate. 
+noisy_y, noisy_labels = noisifier.mix_label_noise(y, .5) 
+
+# Noisifies random classes labeled with 0 by the given rate. 
+noisy_y, noisy_labels = noisifier.add_missing_noise(y, .5) 
+
+# Noisifies random classes labeled with 1 by the given rate. 
+noisy_y, noisy_labels = noisifier.add_extra_noise(y, .5) 
+
+# Noisifies random classes by the given rate. 
+noisy_y, noisy_labels = noisifier.add_mix_noise(y, .5) 
+
+# Noisifies random labels for each class in the batch by the given rate. 
+noisy_y, noisy_labels = noisifier.add_classwise_noise(y, .5) 

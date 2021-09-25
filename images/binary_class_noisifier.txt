@@ -1,0 +1,24 @@
+from noisifier import Binary_Class_Noisifier 
+
+noisifier = Binary_Class_Noisifier() 
+
+# Example input 
+y = np.array([[1.],[0.],[0.],[1.]]) 
+
+# Labels every sample as 0 
+noisy_y, noisy_labels = noisifier.nullify_all(y) # [[0.],[0.],[0.],[0.]] 
+
+# Labels every sample as 1 
+noisy_y, noisy_labels = noisifier.oneify_all(y) # [[1.],[1.],[1.],[1.]] 
+
+# Turns positive labels to negatives randomly by the given noise_rate 
+noisy_y, noisy_labels = noisifier.random_nullify(y, .5) # [[1.],[0.],[0.],[0.]] 
+
+# Turns negative labels to positives randomly by the given noise rate 
+noisy_y, noisy_labels = noisifier.random_oneify(y, .5) # [[1.],[1.],[0.],[0.]] 
+
+# Turns negative labels to positives and negatives to positives randomly by the given noise rates 
+noisy_y, noisy_labels = noisifier.random_zoneify(y, .5, .5) # [[1.],[0.],[1.],[0.]] 
+
+# Noisify the input randomly by the given noise_rate 
+noisy_y, noisy_labels = noisifier.random_noise(y, .5) # [[1.],[1.],[1.],[1.]] 

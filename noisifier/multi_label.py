@@ -19,6 +19,8 @@ class Multi_Label_Noisifier:
         if len(y_batch.shape) != 2:
             raise Exception('The input for noisifier must be a 2D numpy array.')
 
+    def _get_noisy_labels(self, y_batch, y_batch_noisy):
+        return np.argwhere(y_batch != y_batch_noisy)
 
     def random_noise_per_sample(self, y_batch, sample_rate, class_rate, seed=False):
         '''
@@ -39,9 +41,11 @@ class Multi_Label_Noisifier:
         random_classes = np.random.choice(range(0,num_classes),num_noisy_classes, replace=False)
         random_classes = np.expand_dims(random_classes, axis=1)
 
-        y_batch[random_samples, random_classes] = -y_batch[random_samples, random_classes] + 1
+        y_batch_noisy = np.copy(y_batch)
 
-        return y_batch
+        y_batch_noisy[random_samples, random_classes] = -y_batch_noisy[random_samples, random_classes] + 1
+
+        return y_batch_noisy, self._get_noisy_labels(y_batch, y_batch_noisy)
 
     def mix_label_noise(self, y_batch, rate, seed=False):
         '''
@@ -58,12 +62,15 @@ class Multi_Label_Noisifier:
             np.random.seed(0)
 
         num_samples, num_classes = y_batch.shape
-        y_batch = y_batch.flatten()
+        
+        y_batch_noisy = np.copy(y_batch)
+        
+        y_batch_noisy = y_batch_noisy.flatten()
 
         # Get the indices of zeros and map them to a 1-d array
-        zero_indices = np.where(y_batch == 0)[0]
+        zero_indices = np.where(y_batch_noisy == 0)[0]
         # Get the indices of ones and map them to a 1-d array
-        one_indices = np.where(y_batch == 1)[0]
+        one_indices = np.where(y_batch_noisy == 1)[0]
 
         # Calculate the number of zeros to get flipped
         chosen_size_zeros = int(len(zero_indices) * rate)
@@ -75,13 +82,13 @@ class Multi_Label_Noisifier:
         chosen_ones = np.random.choice(one_indices, chosen_size_ones, replace=False)
         
         # Flip the zeros
-        y_batch[chosen_zeros] = 1
+        y_batch_noisy[chosen_zeros] = 1
         # Flip the ones
-        y_batch[chosen_ones] = 0
+        y_batch_noisy[chosen_ones] = 0
         # Reshape the batch
-        y_batch = np.reshape(y_batch, (num_samples, num_classes))
+        y_batch_noisy = np.reshape(y_batch_noisy, (num_samples, num_classes))
 
-        return y_batch
+        return y_batch_noisy, self._get_noisy_labels(y_batch, y_batch_noisy)
 
     def add_missing_noise(self, y_batch, rate, seed=False):
         '''
@@ -95,10 +102,13 @@ class Multi_Label_Noisifier:
             np.random.seed(0)
 
         num_samples, num_classes = y_batch.shape
-        y_batch = y_batch.flatten()
+        
+        y_batch_noisy = np.copy(y_batch)
+        
+        y_batch_noisy = y_batch_noisy.flatten()
 
         # Get the indices of zeros and map them to a 1-d array
-        zero_indices = np.where(y_batch == 0)[0]
+        zero_indices = np.where(y_batch_noisy == 0)[0]
 
         # Calculate the number of zeros to get flipped
         chosen_size = int(len(zero_indices) * rate)
@@ -106,10 +116,10 @@ class Multi_Label_Noisifier:
         chosen_ones = np.random.choice(zero_indices, chosen_size, replace=False)
 
         # Flip labels
-        y_batch[chosen_ones] = 1
-        y_batch = np.reshape(y_batch, (num_samples, num_classes))
+        y_batch_noisy[chosen_ones] = 1
+        y_batch_noisy = np.reshape(y_batch_noisy, (num_samples, num_classes))
 
-        return y_batch
+        return y_batch_noisy, self._get_noisy_labels(y_batch, y_batch_noisy)
 
     def add_extra_noise(self, y_batch, rate, seed=False):
         '''
@@ -123,10 +133,13 @@ class Multi_Label_Noisifier:
             np.random.seed(0)
 
         num_samples, num_classes = y_batch.shape
-        y_batch = y_batch.flatten()
+        
+        y_batch_noisy = np.copy(y_batch)
+        
+        y_batch = y_batch_noisy.flatten()
 
         # Get the indices of ones and map them to a 1-d array
-        one_indices = np.where(y_batch == 1)[0]
+        one_indices = np.where(y_batch_noisy == 1)[0]
 
         # Calculate the number of ones to get flipped
         chosen_size = int(len(one_indices) * rate)
@@ -134,10 +147,10 @@ class Multi_Label_Noisifier:
         chosen_ones = np.random.choice(one_indices, chosen_size, replace=False)
 
         # Flip labels
-        y_batch[chosen_ones] = 0
-        y_batch = np.reshape(y_batch, (num_samples, num_classes))
+        y_batch_noisy[chosen_ones] = 0
+        y_batch_noisy = np.reshape(y_batch_noisy, (num_samples, num_classes))
 
-        return y_batch
+        return y_batch_noisy, self._get_noisy_labels(y_batch, y_batch_noisy)
 
     def add_mix_noise(self, y_batch, rate, seed=False):
         '''
@@ -150,7 +163,10 @@ class Multi_Label_Noisifier:
             np.random.seed(0)
 
         num_samples, num_classes = y_batch.shape
-        y_batch = y_batch.flatten()
+        
+        y_batch_noisy = np.copy(y_batch)
+        
+        y_batch_noisy = y_batch_noisy.flatten()
 
         # Get the indices and map them to a 1-d array
         indices = num_samples * num_classes
@@ -161,10 +177,10 @@ class Multi_Label_Noisifier:
         chosen_ones = np.random.choice(indices, chosen_size, replace=False)
 
         # Flip labels
-        y_batch[chosen_ones] = -y_batch[chosen_ones]+1
-        y_batch = np.reshape(y_batch, (num_samples, num_classes))
+        y_batch_noisy[chosen_ones] = -y_batch_noisy[chosen_ones]+1
+        y_batch_noisy = np.reshape(y_batch_noisy, (num_samples, num_classes))
 
-        return y_batch
+        return y_batch_noisy, self._get_noisy_labels(y_batch, y_batch_noisy)
 
     def add_classwise_noise(self, y_batch, rate, seed=False):
         '''
@@ -179,10 +195,12 @@ class Multi_Label_Noisifier:
 
         num_samples, num_classes = y_batch.shape
         
+        y_batch_noisy = np.copy(y_batch)
+        
         chosen_size = int(num_samples * rate)
 
         for cl in range(num_classes):
             random_samples = np.random.choice(range(0,num_samples),chosen_size, replace=False)
-            y_batch[random_samples,cl] = -y_batch[random_samples,cl] + 1
+            y_batch_noisy[random_samples,cl] = -y_batch_noisy[random_samples,cl] + 1
 
-        return y_batch
+        return y_batch_noisy, self._get_noisy_labels(y_batch, y_batch_noisy)

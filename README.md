@@ -45,6 +45,20 @@ y = keras.utils.to_categorical(y, number_of_classes)
 
 Use a float between 0. and 1. for all the noise rates.
 
+## Tests
+
+To run all the tests:
+
+```
+python -m unittest discover test
+```
+
+To run partial test:
+
+```
+python -m unittest test.test_multi_label
+```
+
 ## Licence
 
 noisifier is released under the MIT licence.

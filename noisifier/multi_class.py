@@ -23,12 +23,14 @@ class Multi_Class_Noisifier:
         if y_batch.shape[0] <= 1:
             raise Exception('The input shape is wrong.')
 
+    def _get_noisy_labels(self, y_batch, y_batch_noisy):
+        return np.argwhere(y_batch != y_batch_noisy)
 
     def flip(self, y_batch, P, seed=0):
 
-        y_batch_copy = np.copy(y_batch)
+        y_batch_noisy = np.copy(y_batch)
 
-        labels = y_batch_copy.shape[0]
+        labels = y_batch_noisy.shape[0]
         flipper = np.random.RandomState(seed)
 
         for i in np.arange(labels):
@@ -40,9 +42,9 @@ class Multi_Class_Noisifier:
             index = np.where(flipped == 1)[1]
             
             # Flip the values
-            y_batch_copy[i][P_row_index], y_batch_copy[i][index] = y_batch_copy[i][index], y_batch_copy[i][P_row_index]
+            y_batch_noisy[i][P_row_index], y_batch_noisy[i][index] = y_batch_noisy[i][index], y_batch_noisy[i][P_row_index]
 
-        return y_batch_copy
+        return y_batch_noisy, self._get_noisy_labels(y_batch, y_batch_noisy)
 
     def symmetry_flip(self, y_batch, noise_rate, seed=0):
         '''
@@ -69,9 +71,9 @@ class Multi_Class_Noisifier:
                 P[i, i] = 1. - noise_rate
             P[num_classes-1, num_classes-1] = 1. - noise_rate
 
-        y_batch = self.flip(y_batch, P, seed)
+        y_batch, noisy_labels = self.flip(y_batch, P, seed)
 
-        return y_batch
+        return y_batch, noisy_labels
 
     def pair_flip(self, y_batch, noise_rate, seed=0):
         '''
@@ -97,6 +99,6 @@ class Multi_Class_Noisifier:
                 P[i, i], P[i, i + 1] = 1. - noise_rate, noise_rate
             P[num_classes-1, num_classes-1], P[num_classes-1, 0] = 1. - noise_rate, noise_rate
 
-        y_batch = self.flip(y_batch, P, seed)
+        y_batch, noisy_labels = self.flip(y_batch, P, seed)
             
-        return y_batch
+        return y_batch, noisy_labels
